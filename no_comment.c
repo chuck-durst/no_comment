@@ -31,7 +31,7 @@ void		display_usage()
   printf("-h : get help\n");
   printf("-d [DIRECTORY] : set the directory for output files\n");
   printf("-D [DIRECTORY] : set the directory for output files and build it if not exist\n");
-  printf("\nnote: if no directory is specified, a new one called 'no_comment' will be created\n");
+  printf("\nnote: if no directory is specified, a new one called 'no_comments' will be created\n");
   printf("You can use multiple files using the structure '*.' but don't use the '*' caractere alone!\n");
   exit(EXIT_FAILURE);
 }
@@ -235,11 +235,11 @@ int		main(int ac, char **av)
       else
 	{
 	  if(directory == NULL)
-	    check_directory("no_comment", 1);
+	    check_directory("no_comments", 1);
 	  parsing_file(av[i],
 		       (directory != NULL ?
 			make_directory(directory, av[i]) :
-			make_directory("./no_comment", av[i])));
+			make_directory("./no_comments", av[i])));
 	}
       i++;
     }
