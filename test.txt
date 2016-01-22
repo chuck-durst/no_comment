@@ -1,0 +1,5 @@
+aaaaaaaaaaaaaaaaaa /*bbbbbbbbbbbb/**/ aaaaaaaa //bbbbbbbb
+aaa/* bbbbbb // bbbbbb */ aaaaaaa /* bbbb
+bbb
+bbb
+*/aaaa
