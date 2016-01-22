@@ -1,10 +1,4 @@
-/*
-** parsing.c
-**
-** Read the files
-**
-** Made by Chuck Durst <charles.durst@epitech.euq>
-*/
+
 
 #include <stdlib.h>
 #include <stdio.h>

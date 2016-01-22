@@ -1,10 +1,4 @@
-/*
-** parsing.c
-**
-** Read the files
-**
-** Made by Chuck Durst <charles.durst@epitech.euq>
-*/
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,8 +33,7 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
       d = opendir(file_name);
       if (d && sub_dir == 1)
 	{
-	   printf(ANSI_COLOR_BLUE"!---> Reading directory '%s':\n"ANSI_COLOR_RESET,
-		  file_name);
+	   printf("!---> Reading directory %s:\n", file_name);
 	  while ((dir = readdir(d)) != NULL)
 	    {
 	      check_directory(directory, 1);
@@ -48,25 +41,24 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
 				  make_directory(directory, dir->d_name),
 				     counter, sub_dir, org_dir);
 	    }
-	  printf(ANSI_COLOR_BLUE"End of directory '%s' <---!\n"ANSI_COLOR_RESET,
-		 file_name);
+	  printf("End of directory %s <---!\n");
 	  return (counter);
 	  closedir(d);
 	}
       return (counter);
     }
-  printf("\n> Reading file: '%s'\n", file_name);
-  printf("Destination: '%s'\n", directory);
+  printf("\n> Reading file: %s\n", file_name);
+  printf("Destination: %s\n", directory);
   if ((fp = fopen(file_name, "r")) == NULL)
     {
-      printf(ANSI_COLOR_RED"! Error while reading file '%s'\n" ANSI_COLOR_RESET
+      printf(ANSI_COLOR_RED "! Error while reading file %s\n" ANSI_COLOR_RESET
 	     , (file_name ? file_name : " "));
       counter[1] = counter[1] + 1;
       return (counter);
     }
   if ((np = fopen(directory, "w+")) == NULL)
     {
-      printf(ANSI_COLOR_RED"! Error while creating file '%s'\n"ANSI_COLOR_RESET
+      printf(ANSI_COLOR_RED "! Error while creating file %s\n" ANSI_COLOR_RESET
 	     , (file_name ? file_name : " "));
       counter[1] = counter[1] + 1;
       return (counter);

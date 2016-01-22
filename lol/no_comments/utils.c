@@ -1,10 +1,4 @@
-/*
-** utils.c
-**
-** Some utils functions
-**
-** Made by Chuck Durst <charles.durst@epitech.euq>
-*/
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,10 +7,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #include "include.h"
 
-//Display the usage command line guide
+
 
 void            display_usage()
 {
@@ -30,7 +23,7 @@ void            display_usage()
   exit(EXIT_FAILURE);
 }
 
-//Build a new directory
+
 
 char            *make_directory(char *directory, char *file_name)
 {
@@ -38,7 +31,7 @@ char            *make_directory(char *directory, char *file_name)
   int           i = 0;
   int           j = 0;
 
-  if ((res = malloc(strlen(directory) + strlen(file_name) + 1)) == NULL)
+  if ((res = malloc(sizeof(directory) + sizeof(file_name) + 5)) == NULL)
     exit(0);
   while (directory[i] != '\0')
     res[i] = directory[i++];
@@ -46,11 +39,11 @@ char            *make_directory(char *directory, char *file_name)
     res[i++] = '/';
   while (file_name[j] != '\0')
     res[i++] = file_name[j++];
-  res[i] = '\0';
+  res[i + 1] = '\0';
   return (res);
 }
 
-//Check if the directory exist and quit if it's not the case
+
 
 int             check_directory(char *directory, int build)
 {

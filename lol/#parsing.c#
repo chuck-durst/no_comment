@@ -1,10 +1,4 @@
-/*
-** parsing.c
-**
-** Read the files
-**
-** Made by Chuck Durst <charles.durst@epitech.euq>
-*/
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,8 +33,7 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
       d = opendir(file_name);
       if (d && sub_dir == 1)
 	{
-	   printf(ANSI_COLOR_BLUE"!---> Reading directory '%s':\n"ANSI_COLOR_RESET,
-		  file_name);
+	   printf("!---> Reading directory '%s':\n", file_name);
 	  while ((dir = readdir(d)) != NULL)
 	    {
 	      check_directory(directory, 1);
@@ -48,8 +41,7 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
 				  make_directory(directory, dir->d_name),
 				     counter, sub_dir, org_dir);
 	    }
-	  printf(ANSI_COLOR_BLUE"End of directory '%s' <---!\n"ANSI_COLOR_RESET,
-		 file_name);
+	  printf("End of directory '%s' <---!\n", file_name);
 	  return (counter);
 	  closedir(d);
 	}
