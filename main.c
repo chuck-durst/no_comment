@@ -25,11 +25,12 @@ int		main(int ac, char **av)
   int		sub_dir = 0;
   char		*directory = NULL;
 
-  if ((counter = malloc(3)) == NULL)
+  if ((counter = malloc(4)) == NULL)
     exit(0);
   counter[0] = 0;
   counter[1] = 0;
   counter[2] = 0;
+  counter[3] = 0;
   if (ac < 2)
     display_usage();
   while (i < ac)
@@ -55,20 +56,19 @@ int		main(int ac, char **av)
 	}
       else
 	{
-	  if(directory == NULL)
+	  if (directory == NULL)
 	    {
 	      check_directory("no_comments", 1);
 	      directory = "no_comments";
 	    }
 	  counter =  parsing_file(av[i],
-				  make_directory(directory, av[i]), counter, sub_dir);
-	  count_file++;
+				  make_directory(directory, av[i]), counter, sub_dir, directory);
 	}
       i++;
     }
   printf(ANSI_COLOR_BLUE"---------------------DONE--------------------\n"
 	 ANSI_COLOR_RESET);
-  printf(" %d files ", count_file);
+  printf(" %d files ", counter[3]);
   printf(ANSI_COLOR_GREEN" %d success "ANSI_COLOR_RESET, counter[0]);
   printf(ANSI_COLOR_RED" %d errors "ANSI_COLOR_RESET, counter[1]);
   printf(ANSI_COLOR_BLUE" %d comments deleted\n"ANSI_COLOR_RESET, counter[2]);

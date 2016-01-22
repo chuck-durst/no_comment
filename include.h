@@ -24,8 +24,9 @@
 //functions
 
 int	write_file(FILE*, char*, int);
-int	*parsing_file(char*, char*, int*, int);
+int	*parsing_file(char*, char*, int*, int, char*);
 void	display_usage();
 char	*make_directory(char*, char*);
 int	check_directory(char*, int);
 int	is_directory(char *);
+int	nmatch(char*, char*);

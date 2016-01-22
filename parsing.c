@@ -17,7 +17,7 @@
 #include "include.h"
 
 int             *parsing_file(char *file_name, char *directory, int *counter,
-			      int sub_dir)
+			      int sub_dir, char *org_dir)
 {
   FILE          *fp;
   FILE          *np;
@@ -29,18 +29,26 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
   DIR           *d;
   struct dirent *dir;
 
-  if (is_directory(file_name) == 1)
+  if (nmatch(file_name, "*/..") == 1 || nmatch(file_name, "*/.") == 1 ||
+       nmatch(file_name, ".") == 1 || nmatch(file_name, "..") == 1 ||
+      nmatch(file_name, "no_comment") == 1)
+    return (counter);
+  counter[3] = counter[3] + 1;
+  if  (is_directory(file_name) == 1 && nmatch(file_name, org_dir) == 0)
     {
       d = opendir(file_name);
       if (d && sub_dir == 1)
 	{
+	   printf("!---> Reading directory %s:\n", file_name);
 	  while ((dir = readdir(d)) != NULL)
 	    {
-	      printf("-->%s is a directory:\n", file_name);
-	      return(parsing_file(make_directory(file_name, dir->d_name),
+	      check_directory(directory, 1);
+	      counter = parsing_file(make_directory(file_name, dir->d_name),
 				  make_directory(directory, dir->d_name),
-				  counter, sub_dir));
+				     counter, sub_dir, org_dir);
 	    }
+	  printf("End of directory %s <---!\n");
+	  return (counter);
 	  closedir(d);
 	}
       return (counter);
@@ -64,7 +72,7 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
   counter[0] = counter[0] + 1;
   while ((read = getline(&line, &len, fp)) != -1)
     comment_count = write_file(np, line, comment_count);
-  printf("Total comments deleted: %d\n", comment_count);
+  printf("Total of comments deleted: %d\n", comment_count);
   printf(ANSI_COLOR_GREEN "--> Done for %s\n\n"ANSI_COLOR_RESET, file_name);
   counter[2] = counter[2] + comment_count;
   return (counter);
