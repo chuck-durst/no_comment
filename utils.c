@@ -16,6 +16,15 @@
 #include <string.h>
 #include "include.h"
 
+//Display the error and exit the program
+
+void		print_error(char *msg)
+{
+  if (msg != NULL)
+    printf(ANSI_COLOR_RED"%s"ANSI_COLOR_RESET, msg);
+  exit(EXIT_FAILURE);
+}
+
 //Display the usage command line guide
 
 void            display_usage()
@@ -23,9 +32,9 @@ void            display_usage()
   printf("Usage: ./no_comment [FILES_NAME]\n");
   printf("\nOptions:\n");
   printf("-h : get help\n");
-  printf("-d [DIRECTORY] : set the directory for output files\n");
-  printf("-s : open sub directory\n");
-  printf("-D [DIRECTORY] : set the directory for output files and build it if not exist\n");
+  printf("-d [DIRECTORY] : set the directory for the output files\n");
+  printf("-s : read files in sub directory\n");
+  printf("-D [DIRECTORY] : set the directory for the output files and build it if not exist\n");
   printf("\nnote: if no directory is specified, a new one called 'no_comments' will be created\n");
   exit(EXIT_FAILURE);
 }
@@ -54,12 +63,14 @@ char            *make_directory(char *directory, char *file_name)
 
 int             check_directory(char *directory, int build)
 {
-  struct stat s;
-  int err = stat(directory, &s);
+  struct stat	s;
+  int		err = stat(directory, &s);
 
-  if(-1 == err)
+  if (-1 == err)
     {
-      if(build == 0)
+      if (build == 2)
+	return (0);
+      else if (build == 0)
 	{
 	  printf(ANSI_COLOR_RED "ERROR: %s does not exist\n" ANSI_COLOR_RESET,
 		 directory);
@@ -75,6 +86,10 @@ int             check_directory(char *directory, int build)
     {
       if(S_ISDIR(s.st_mode))
 	return (1);
+      else if (build == 2)
+	return (0);
+      else if (build == 1)
+	mkdir(directory, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
       else
 	{
 	  printf(ANSI_COLOR_RED "ERROR: %s is not a directory\n" ANSI_COLOR_RESET

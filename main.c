@@ -16,53 +16,119 @@
 #include <fcntl.h>
 #include "include.h"
 
-int		main(int ac, char **av)
+llist		get_params(char **args, int cnt)
 {
   int		i = 1;
+  int		j = 0;
+  int		dir_c = 0;
+  llist		l_args;
+
+  if ((l_args = malloc(sizeof(llist))) == NULL)
+    exit(EXIT_FAILURE);
+  while (i < cnt)
+    {
+      if (args[i][0] == '-')
+	{
+	  j = 1;
+	  while (args[i][j] != '\0')
+	    {
+	      switch (args[i][j])
+		{
+		case 'h':
+		  display_usage();
+		  break;
+		case 'd':
+		  if (l_args->pr_D == 1)
+		    print_error("Error: Cannot use params 's' and 'S' together\n");
+		  l_args->pr_d = 1;
+		  break;
+		case 'D':
+		  if (l_args->pr_d == 1)
+		    print_error("Error: Cannot use params 's' and 'S' together\n");
+		  l_args->pr_D = 1;
+		  break;
+		case 's':
+		  l_args->pr_s = 1;
+		  break;
+		case 'n':
+		  if (l_args->pr_N == 1)
+		    print_error("Error: Cannot use params 'n' and 'N' together\n");
+		  l_args->pr_n = 1;
+		  break;
+		case 'N':
+		  if (l_args->pr_n == 1)
+		    print_error("Error: Cannot use params 'n' and 'N' together\n");
+		  l_args->pr_N = 1;
+		  break;
+		default:
+		  printf("Error: '%c' is not a valid argument\n", args[i][j]);
+		  exit(EXIT_FAILURE);
+		  break;
+		}
+	      j++;
+	    }
+	}
+      else
+	{
+	  if (l_args->pr_D == 1 || l_args->pr_d == 1)
+	    {
+	      if (dir_c == 0)
+		{
+		  if ((l_args->directory = malloc(sizeof(args[i]))) == NULL)
+		    exit(EXIT_FAILURE);
+		  if (l_args->pr_d == 1 && check_directory(args[i], 0) != 1)
+		    print_error("Error: Directory not found\n");
+		  else if (l_args->pr_D == 1 && check_directory(args[i], 1) != 1)
+		    l_args->directory = args[i];
+		  else
+		    l_args->directory = args[i];
+		  dir_c = 1;
+		}
+	    }
+	}
+      i++;
+    }
+  if (l_args->pr_D != 1 && l_args->pr_d != 1)
+    {
+      if ((l_args->directory = malloc(11)) == NULL)
+	exit(EXIT_FAILURE);
+      l_args->directory = "no_comments";
+      check_directory("no_comments", 1);
+    }
+  if (l_args->pr_d == 1 && dir_c == 0)
+    display_usage();
+  return (l_args);
+}
+
+int		main(int ac, char **av)
+{
+  int		i = 0;
   int		j = 0;
   int		*counter;
   int		count_file = 0;
   int		sub_dir = 0;
-  char		*directory = NULL;
+  llist		l_args = NULL;
 
   if ((counter = malloc(4)) == NULL)
     exit(0);
-  counter[0] = 0;
-  counter[1] = 0;
-  counter[2] = 0;
-  counter[3] = 0;
+  while (i < 4)
+    counter[i++] = 0;
+  i = 1;
   if (ac < 2)
     display_usage();
+  l_args = get_params(av, ac);
+  printf("pr_h: %d\n", l_args->pr_h);
+  printf("pr_d: %d\n", l_args->pr_d);
+  printf("pr_D: %d\n", l_args->pr_D);
+  printf("pr_s: %d\n", l_args->pr_s);
+  printf("pr_n: %d\n", l_args->pr_n);
+  printf("pr_N: %d\n", l_args->pr_N);
+  printf("pr_directory: %s\n", l_args->directory);
   while (i < ac)
     {
-      if (av[i][0] == '-')
+      if (av[i][0] != '-' && nmatch(l_args->directory, av[i]) != 1)
 	{
-	  if (av[i][1] == 'd')
-	    {
-	      i++;
-	      if (check_directory(av[i], 0) == 1)
-		directory = av[i];
-	    }
-	  else if (av[i][1] == 'D')
-	    {
-	      i++;
-	      if (check_directory(av[i], 1) == 1)
-		directory = av[i];
-	    }
-	  else if (av[i][1] == 'h')
-	    display_usage();
-	  else if (av[i][1] == 's')
-	    sub_dir = 1;
-	}
-      else
-	{
-	  if (directory == NULL)
-	    {
-	      check_directory("no_comments", 1);
-	      directory = "no_comments";
-	    }
-	  counter =  parsing_file(av[i],
-				  make_directory(directory, av[i]), counter, sub_dir, directory);
+	  counter = parsing_file(av[i], counter, l_args);
 	}
       i++;
     }

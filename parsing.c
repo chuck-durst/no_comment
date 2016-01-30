@@ -16,8 +16,7 @@
 #include <dirent.h>
 #include "include.h"
 
-int             *parsing_file(char *file_name, char *directory, int *counter,
-			      int sub_dir, char *org_dir)
+int             *parsing_file(char *file_name, int *counter, llist l_args)
 {
   FILE          *fp;
   FILE          *np;
@@ -27,10 +26,13 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
   int           i = 1;
   int		comment_count = 0;
   DIR           *d;
+  char		*directory = make_directory(l_args->directory, file_name);
+  int		sub_dir = l_args->pr_s;
+  char		*org_dir = l_args->directory;
   struct dirent *dir;
 
   if (nmatch(file_name, "*/..") == 1 || nmatch(file_name, "*/.") == 1 ||
-       nmatch(file_name, ".") == 1 || nmatch(file_name, "..") == 1 ||
+      nmatch(file_name, ".") == 1 || nmatch(file_name, "..") == 1 ||
       nmatch(file_name, "no_comment") == 1)
     return (counter);
   counter[3] = counter[3] + 1;
@@ -39,14 +41,13 @@ int             *parsing_file(char *file_name, char *directory, int *counter,
       d = opendir(file_name);
       if (d && sub_dir == 1)
 	{
-	   printf(ANSI_COLOR_BLUE"!---> Reading directory '%s':\n"ANSI_COLOR_RESET,
-		  file_name);
+	  printf(ANSI_COLOR_BLUE"!---> Reading directory '%s':\n"ANSI_COLOR_RESET,
+		 file_name);
 	  while ((dir = readdir(d)) != NULL)
 	    {
 	      check_directory(directory, 1);
 	      counter = parsing_file(make_directory(file_name, dir->d_name),
-				  make_directory(directory, dir->d_name),
-				     counter, sub_dir, org_dir);
+				     counter, l_args);
 	    }
 	  printf(ANSI_COLOR_BLUE"End of directory '%s' <---!\n"ANSI_COLOR_RESET,
 		 file_name);
