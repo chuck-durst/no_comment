@@ -117,13 +117,6 @@ int		main(int ac, char **av)
   if (ac < 2)
     display_usage();
   l_args = get_params(av, ac);
-  printf("pr_h: %d\n", l_args->pr_h);
-  printf("pr_d: %d\n", l_args->pr_d);
-  printf("pr_D: %d\n", l_args->pr_D);
-  printf("pr_s: %d\n", l_args->pr_s);
-  printf("pr_n: %d\n", l_args->pr_n);
-  printf("pr_N: %d\n", l_args->pr_N);
-  printf("pr_directory: %s\n", l_args->directory);
   while (i < ac)
     {
       if (av[i][0] != '-' && nmatch(l_args->directory, av[i]) != 1)
