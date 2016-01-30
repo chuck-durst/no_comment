@@ -95,6 +95,8 @@ llist		get_params(char **args, int cnt)
       l_args->directory = "no_comments";
       check_directory("no_comments", 1);
     }
+  if (check_directory(l_args->directory, 2) != 1)
+    print_error("Error: Cannot creat directory\n");
   if (l_args->pr_d == 1 && dir_c == 0)
     display_usage();
   return (l_args);
