@@ -1,5 +1,5 @@
 # no_comment
-This program allows to easily remove comments on specifics files.
+This program allows easily removal of comments on specifics files.
 
 Usage: ./no_comment [FILES_NAMES]
 
