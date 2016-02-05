@@ -1,9 +1,9 @@
 # no_comment
-This program is used for easily remove comments on specifics files.
+This program allows easily removal of comments on specifics files.
 
 Usage: ./no_comment [FILES_NAMES]
 
-Use the following command to get some help: ./no_comment -h
+Use the following command to display some help: ./no_comment -h
 
 Ce programme permet de facilement supprimer les commentaires contenus dans des fichiers.
 
